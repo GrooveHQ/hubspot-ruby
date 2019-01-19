@@ -59,11 +59,7 @@ module Hubspot
       end
 
       def log_request_and_response(uri, response, body=nil)
-        Hubspot::Config.logger.info(<<~MSG)
-          Hubspot: #{uri}.
-          Body: #{body}.
-          Response: #{response.code} #{response.body}
-        MSG
+        Hubspot::Config.logger.info("Hubspot: #{uri}. Body: #{body}. Response: #{response.code} #{response.body}")
       end
 
       def generate_url(path, params={}, options={})
@@ -71,7 +67,7 @@ module Hubspot
           options[:hapikey] = false
         else
           Hubspot::Config.ensure! :hapikey
-          end
+        end
         path = path.clone
         params = params.clone
         base_url = options[:base_url] || Hubspot::Config.base_url
@@ -80,7 +76,7 @@ module Hubspot
         if path =~ /:portal_id/
           Hubspot::Config.ensure! :portal_id
           params["portal_id"] = Hubspot::Config.portal_id if path =~ /:portal_id/
-          end
+        end
 
         params.each do |k,v|
           if path.match(":#{k}")
